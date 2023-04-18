@@ -135,6 +135,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Global.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\player.png" />
+    <Image Include="coin.png" />
+    <Image Include="enemy.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
