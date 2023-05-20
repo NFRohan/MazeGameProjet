@@ -1,7 +1,9 @@
 ﻿#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
-
+#include <string>
+#include <sstream>
+#include <fstream>
 using namespace sf;
 using namespace std;
 
@@ -19,14 +21,14 @@ int main() {
 
     Vector2i player = Vector2i(13, 13);
     Texture playerTex;
-    playerTex.loadFromFile("player.png");
+    playerTex.loadFromFile("self.png");
     Sprite playerSprite;
     playerSprite.setTexture(playerTex);
     playerSprite.setPosition(player.x * 40.f, player.y * 40.f);
 
     Vector2i opponent = Vector2i(1, 1);
     Texture opponentTex;
-    opponentTex.loadFromFile("enemy.png");
+    opponentTex.loadFromFile("walk2.png");
     Sprite opponentSprite;
     opponentSprite.setTexture(opponentTex);
     opponentSprite.setPosition(opponent.x * 40.f, opponent.y * 40.f);
@@ -39,6 +41,18 @@ int main() {
 
     int gameMap[15 * 15];
     RectangleShape displayRects[15 * 15];
+
+    Font f;
+    f.loadFromFile("DMSans.ttf");
+    std::ostringstream oss;
+    oss << "SCORE: " << to_string(score);
+    std::string var = oss.str();
+    Text scoreboard;
+    scoreboard.setFont(f);
+    scoreboard.setCharacterSize(20);
+    scoreboard.setString(var);
+
+    ofstream file;
 
     for (int i = 0; i < 15; i++) {
         for (int j = 0; j < 15; j++) {
@@ -56,6 +70,9 @@ int main() {
         }
     }
 
+
+
+    
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -216,7 +233,15 @@ int main() {
 
         window.draw(playerSprite);
         window.draw(opponentSprite);
+        
+        
+        std::ostringstream oss;
+        oss.str("");
 
+        oss << "SCORE: " << to_string(score);
+        std::string var = oss.str();;
+        scoreboard.setString(var);
+        window.draw(scoreboard);
         window.display();
 
         if (gameMap[player.x + player.y * 15] == 2) {
@@ -241,6 +266,10 @@ int main() {
 
         if (player == opponent) {
             cout << "Final Score: " << score << endl;
+            
+            file.open("filePath.txt", ios::app);
+            file << score << " ";
+            file.close();
             return 0;
         }
     }
